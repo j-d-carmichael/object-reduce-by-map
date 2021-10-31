@@ -20,6 +20,11 @@ interface Options {
    * If true, will pass null or undefined keys through
    */
   allowNullishKeys?: boolean
+
+  /**
+   * If true, will not attempt to reduce the input when the map is an empty object
+   */
+  permitEmptyMap?: boolean
 }
 
 export default function(input: object, map: object, options?: Options): object
