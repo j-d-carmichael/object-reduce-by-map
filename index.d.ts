@@ -25,6 +25,11 @@ interface Options {
    * If true, will not attempt to reduce the input when the map is an empty object
    */
   permitEmptyMap?: boolean
+
+  /**
+   * If true, will not attempt to reduce the input when the map is undefined
+   */
+  permitUndefinedMap?: boolean
 }
 
 export default function(input: object, map: object, options?: Options): object

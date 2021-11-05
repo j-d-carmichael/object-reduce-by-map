@@ -21,6 +21,7 @@ Recursively reduce an object to match a given map, plus config options, 1 js fil
    -  throwErrorOnAlien: Throw error on alien found
    -  allowNullishKeys: Preserve null or undefined keys in the output
    -  permitEmptyMap: If true, will not attempt to reduce the input when the map is an empty object
+   -  permitUndefinedMap: If true, will not attempt to reduce the input when the map is undefined
 
 ## Breaking changes 1 -> 2
 In version 1 a bug was discovered that permitted alien keys of null value into the output. This has now been resolved however may cause any tools using this helper tool to break, hence the major version bump.

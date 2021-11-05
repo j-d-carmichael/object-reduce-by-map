@@ -1,6 +1,6 @@
 {
   "name": "object-reduce-by-map",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "Recursively reduce an object to match a given map.",
   "main": "src/reducer.js",
   "scripts": {

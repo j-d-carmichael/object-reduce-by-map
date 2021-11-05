@@ -143,6 +143,7 @@ const injectMissingKeys = (input, map) => {
  * @param {boolean} [options.throwErrorOnAlien] - If true will throw an error when an alien key is found instead of just deleting it
  * @param {boolean} [options.allowNullish] - If true, will pass null or undefined through
  * @param {boolean} [options.permitEmptyMap] - If true, will not attempt to reduce the input when the map is an empty object
+ * @param {boolean} [options.permitUndefinedMap] - If true, will not attempt to reduce the input when the map is undefined
  * @return {*}
  */
 module.exports = (input, map, options = {}) => {
@@ -150,9 +151,13 @@ module.exports = (input, map, options = {}) => {
     if (options.allowNullish) {
       return input;
     }
-
     throw new Error(`object-reduce-by-map: array or object expected, received type '${input}'. Override with option allowNullish`);
   }
+
+  if (options.permitUndefinedMap && typeof map === 'undefined') {
+    return input;
+  }
+
   // prep
   if (getType(input) === 'array' && getType(map) === 'array') {
     if (input.length === 0 && !options.keepKeys) {
@@ -164,10 +169,13 @@ module.exports = (input, map, options = {}) => {
       }
     });
   }
+
   if (options.permitEmptyMap && !Object.keys(map).length) {
     return input;
   }
+
   input = reducer(JSON.parse(JSON.stringify(input)), map, options);
+
   if (savedOpts.keepKeys) {
     // At this point we have retained all keys as null wherein the said leaf data type was incorrect
     // The missing keys should now be re-injected
