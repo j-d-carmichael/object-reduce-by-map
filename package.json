@@ -8,7 +8,7 @@
   "main": "src/reducer.js",
   "types": "src/reducer.d.ts",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest run",
     "prepublish": "npm run build:readme:toc && npm run test",
     "build:readme:toc": "npx doctoc ."
   },
