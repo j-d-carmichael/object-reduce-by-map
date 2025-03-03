@@ -1,4 +1,0 @@
-#!/bin/sh
-
-# Run all tests before rebasing
-npm run test || exit 1

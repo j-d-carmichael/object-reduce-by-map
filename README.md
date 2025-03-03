@@ -7,6 +7,8 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # object-reduce-by-map
+
 Recursively reduce an object to match a given map, plus config options, 1 js file (with types)
 
-See the full docs: [https://j-d-carmichael.github.io/object-reduce-by-map](https://j-d-carmichael.github.io/object-reduce-by-map).
+See the full
+docs: [https://j-d-carmichael.github.io/object-reduce-by-map](https://j-d-carmichael.github.io/object-reduce-by-map).

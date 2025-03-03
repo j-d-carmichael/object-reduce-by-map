@@ -1,74 +1,57 @@
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+# ChangeLog
 
-- [Change Log](#change-log)
-- [1.3.0 (2019-05-12)](#130-2019-05-12)
-    - [Features](#features)
-- [1.1.0 (2019-04-30)](#110-2019-04-30)
-    - [Features](#features-1)
-- [1.2.0 (2019-04-30)](#120-2019-04-30)
-    - [Bug Fixes](#bug-fixes)
-    - [Features](#features-2)
-- [1.1.0 (2019-04-30)](#110-2019-04-30-1)
-    - [Features](#features-3)
-- [1.1.0 (2019-04-30)](#110-2019-04-30-2)
-    - [Features](#features-4)
+## 3.0.0 (2025-03-03)
+* breaking: Upgrade to "type: module" in package.json
+* migrate to vitest away from jest
 
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+## 2.1.0 (2021-11-5)
+* empty map object updates
 
-# Change Log
+## 2.0.5 (2021-10-31)
+* more types
 
-All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+## 2.0.4 (2021-10-31)
+* docs
 
-# 1.3.0 (2019-05-12)
+## 2.0.3 (2021-10-31)
+* permit empty maps by config injection
 
+## 2.0.3 (2021-10-31)
+* permit empty maps by config injection
 
-### Features
+## 2.0.2 (2020-12-18)
+* Separate `keepKeys` and `allowNullishKeys` (#12)
+* closes #11: differentiate between adding keys when not present and passing provided null keys through
+* update docs
 
-* Inject missing map keys from provided input object ([c5c1027](https://github.com/johndcarmichael/object-reduce-by-map/commit/c5c1027))
+## 2.0.1 (2020-12-16)
+* fix: when leaf val is null this additional check ensure it doesn't try to parse an object
 
+## 2.0.0 (2019-05-12)
+* Types added
 
+## 2.0.0 (2019-05-12)
+* Types added
 
-# 1.1.0 (2019-04-30)
+## 1.3.0 (2019-05-12)
+* Inject missing map keys from provided input object
 
+## 1.3.0 (2019-05-12)
+* Inject missing map keys from provided input object
 
-### Features
+## 1.1.0 (2019-04-30)
+* options.keepkeys and standard version added
+* Return object with all keys from map with at least value null.
 
-* options.keepkeys and standard version added ([3820d19](https://github.com/johndcarmichael/object-reduce-by-map/commit/3820d19))
-* Return object with all keys from map with at least value null. ([6acc05f](https://github.com/johndcarmichael/object-reduce-by-map/commit/6acc05f))
+## 1.2.0 (2019-04-30)
+* allow no-fallthrough in eslint for simpler parsing the switch
+* Inject missing map keys from provided input object
+* installing githooks npm script
 
+## 1.1.0 (2019-04-30)
+* options.keepkeys and standard version added
+* Return object with all keys from map with at least value null
 
-
-# 1.2.0 (2019-04-30)
-
-
-### Bug Fixes
-
-* allow  no-fallthrough in eslint for simpler parsing the switch ([a8fe5f3](https://github.com/johndcarmichael/object-reduce-by-map/commit/a8fe5f3))
-
-
-### Features
-
-* Inject missing map keys from provided input object ([976f971](https://github.com/johndcarmichael/object-reduce-by-map/commit/976f971))
-* installing githooks npm script ([e1e8bf9](https://github.com/johndcarmichael/object-reduce-by-map/commit/e1e8bf9))
-
-
-
-# 1.1.0 (2019-04-30)
-
-
-### Features
-
-* options.keepkeys and standard version added ([3820d19](https://github.com/johndcarmichael/object-reduce-by-map/commit/3820d19))
-* Return object with all keys from map with at least value null. ([6acc05f](https://github.com/johndcarmichael/object-reduce-by-map/commit/6acc05f))
-
-
-
-# 1.1.0 (2019-04-30)
-
-
-### Features
-
-* options.keepkeys and standard version added ([15931e6](https://github.com/johndcarmichael/object-reduce-by-map/commit/15931e6))
-* Return object with all keys from map with at least value null. ([6acc05f](https://github.com/johndcarmichael/object-reduce-by-map/commit/6acc05f))
+## 1.1.0 (2019-04-30)
+* options.keepkeys and standard version added
+* Return object with all keys from map with at least value null.

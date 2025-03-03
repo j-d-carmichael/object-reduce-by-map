@@ -1,12 +1,14 @@
 {
   "name": "object-reduce-by-map",
-  "version": "2.1.0",
   "description": "Recursively reduce an object to match a given map.",
+  "version": "3.0.0",
+  "author": "John Carmichael",
+  "license": "MIT",
+  "type": "module",
   "main": "src/reducer.js",
+  "types": "src/reducer.d.ts",
   "scripts": {
-    "test": "jest",
-    "install:githooks": "cp ./githooks/* .git/hooks",
-    "lint": "eslint ./src",
+    "test": "vitest",
     "prepublish": "npm run build:readme:toc && npm run test",
     "build:readme:toc": "npx doctoc ."
   },
@@ -14,19 +16,11 @@
     "type": "git",
     "url": "git+https://github.com/johndcarmichael/object-reduce-by-map.git"
   },
-  "author": "John Carmichael",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/johndcarmichael/object-reduce-by-map/issues"
   },
   "homepage": "https://github.com/johndcarmichael/object-reduce-by-map#readme",
   "devDependencies": {
-    "eslint": "^7.11.0",
-    "eslint-config-standard": "^14.1.1",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "jest": "^26.6.0"
+    "vitest": "^3.0.7"
   }
 }

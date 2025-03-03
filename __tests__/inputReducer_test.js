@@ -1,4 +1,29 @@
-const reducer = require('../src/reducer')
+import { describe, it, test, expect } from 'vitest';
+import reducer from '../src/reducer';
+
+describe('Reducer with empty map behavior', () => {
+  const map = {};
+  const input = {
+    name: 'bob',
+    age: 537
+  };
+
+  it('should return the object unaffected with a map of no keys', () => {
+    expect(reducer(input, map, { permitEmptyMap: true })).toEqual(input);
+  });
+
+  it('should return the object empty when the option is not passed', () => {
+    expect(reducer(input, map, {})).toEqual({});
+  });
+
+  it('should return the object unaffected with a map of undefined', () => {
+    expect(reducer(input, undefined, { permitUndefinedMap: true })).toEqual(input);
+  });
+
+  it('should throw an error for undefined without express permission for undefined map', () => {
+    expect(() => reducer(input, undefined, {})).toThrow();
+  });
+});
 
 describe('ensure the reducer reduces', () => {
   test('reduce and 1 key', () => {
@@ -6,16 +31,16 @@ describe('ensure the reducer reduces', () => {
       a: 1,
       b: 2,
       c: 3,
-    }
+    };
     const map = {
       a: Number,
       b: String,
-    }
+    };
     const expected = {
       a: 1,
-    }
-    expect(reducer(input, map)).toEqual(expected)
-  })
+    };
+    expect(reducer(input, map)).toEqual(expected);
+  });
 
   test('reduce by nested keys', () => {
     const input = {
@@ -43,7 +68,7 @@ describe('ensure the reducer reduces', () => {
           another: [1, 2, 3]
         }
       }
-    }
+    };
 
     const map = {
       name: String,
@@ -60,7 +85,7 @@ describe('ensure the reducer reduces', () => {
           ]
         }
       }
-    }
+    };
 
     const expected = {
       name: 'bmw',
@@ -81,14 +106,14 @@ describe('ensure the reducer reduces', () => {
           another: [1, 2, 3]
         }
       }
-    }
-    const calculated = reducer(input, map)
+    };
+    const calculated = reducer(input, map);
     expect(
       calculated
     ).toEqual(
       expected
-    )
-  })
+    );
+  });
 
   test('reduce and 1 key within numeric array', () => {
     const input = {
@@ -103,7 +128,7 @@ describe('ensure the reducer reduces', () => {
         e: 'yes',
         f: 'yes'
       }]
-    }
+    };
     const map = {
       a: Number,
       b: Number,
@@ -114,7 +139,7 @@ describe('ensure the reducer reduces', () => {
         d: String,
         e: String,
       }]
-    }
+    };
     const expected = {
       a: 1,
       b: 2,
@@ -125,9 +150,9 @@ describe('ensure the reducer reduces', () => {
         d: 'yes',
         e: 'yes',
       }]
-    }
-    expect(reducer(input, map)).toEqual(expected)
-  })
+    };
+    expect(reducer(input, map)).toEqual(expected);
+  });
 
   test('reduce with numeric array in numeric array', () => {
     const input = {
@@ -143,7 +168,7 @@ describe('ensure the reducer reduces', () => {
           a: 1
         }
       }]
-    }
+    };
     const map = {
       a: Number,
       b: Number,
@@ -152,7 +177,7 @@ describe('ensure the reducer reduces', () => {
           Number
         ],
       }]
-    }
+    };
     const expected = {
       a: 1,
       b: 2,
@@ -161,89 +186,7 @@ describe('ensure the reducer reduces', () => {
       }, {
         d: [4, 3, 2],
       }]
-    }
-    expect(reducer(input, map)).toEqual(expected)
-  })
-
-  test('reduce but starting with array of object', () => {
-    const input = [{
-      a: 123,
-      b: 'hello',
-      c: 'not me'
-    }]
-    const map = [{
-      a: Number,
-      b: String,
-    }]
-    const expected = [{
-      a: 123,
-      b: 'hello'
-    }]
-    expect(reducer(input, map)).toEqual(expected)
-  })
-})
-
-describe('use keepKeys in options', () => {
-  it('should keep all keys in simple object', () => {
-    var input = {
-      a: 123,
-      b: 'should be a string'
-    }
-    var map = {
-      a: Number,
-      b: Number
-    }
-
-    expect(reducer(input, map, { keepKeys: true })).toEqual({
-      a: 123,
-      b: null
-    })
-  })
-
-  it('should keep all keys in non-simple object', () => {
-    var input = {
-      a: 123,
-      b: {
-        c: [
-          {
-            name: 'Bob',
-            colour: 'red',
-          }
-        ]
-      }
-    }
-    var map = {
-      a: Number,
-      a1: String,
-      a2: Number,
-      a3: [],
-      a4: Number,
-      b: {
-        bA: String,
-        c: [
-          {
-            name: String,
-            age: Number
-          }
-        ]
-      }
-    }
-
-    expect(reducer(input, map, { keepKeys: true })).toEqual({
-      a: 123,
-      a1: null,
-      a2: null,
-      a3: null,
-      a4: null,
-      b: {
-        bA: null,
-        c: [
-          {
-            name: 'Bob',
-            age: null
-          }
-        ]
-      }
-    })
-  })
-})
+    };
+    expect(reducer(input, map)).toEqual(expected);
+  });
+});

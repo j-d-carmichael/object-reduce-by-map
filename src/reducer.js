@@ -3,7 +3,7 @@ let savedOpts;
 /**
  * Returns the type of the first param given
  * @param a
- * @return {string|"undefined"|"object"|"boolean"|"number"|"string"|"function"|"symbol"|"bigint"}
+ * @return {string|'undefined'|'object'|'boolean'|'number'|'string'|'function'|'symbol'|'bigint'}
  */
 const getType = (a) => {
   if (typeof a === 'function') {
@@ -33,7 +33,7 @@ const getType = (a) => {
 /**
  *
  * @param input
- * @param map
+ * @param mapItem
  * @param inputMaster
  * @param key
  */
@@ -146,7 +146,7 @@ const injectMissingKeys = (input, map) => {
  * @param {boolean} [options.permitUndefinedMap] - If true, will not attempt to reduce the input when the map is undefined
  * @return {*}
  */
-module.exports = (input, map, options = {}) => {
+const reduceByMap = (input, map, options = {}) => {
   if (typeof input === 'undefined' || input === null) {
     if (options.allowNullish) {
       return input;
@@ -183,3 +183,5 @@ module.exports = (input, map, options = {}) => {
   }
   return input;
 };
+
+export default reduceByMap;

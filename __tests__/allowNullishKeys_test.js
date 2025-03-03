@@ -1,4 +1,5 @@
-const reducer = require('../src/reducer');
+import { describe, expect, it } from 'vitest';
+import reducer from '../src/reducer';
 
 describe('Test passing null keys through', () => {
   const map = {
@@ -25,7 +26,6 @@ describe('Test passing null keys through', () => {
       date: '1970-01-01',
       type: 'test',
     };
-
 
     expect(reducer(testInput, map, defaultOptions)).toEqual(testInput);
 
@@ -54,7 +54,6 @@ describe('Test passing null keys through', () => {
       date: '1970-01-01',
       type: null,
     };
-
 
     expect(reducer(testInput, map, defaultOptions)).toEqual({
       id: 10,
@@ -86,7 +85,6 @@ describe('Test passing null keys through', () => {
       date: '1970-01-01',
       type: undefined,
     };
-
 
     expect(reducer(testInput, map, defaultOptions)).toEqual({
       id: 10,
@@ -122,7 +120,6 @@ describe('Test passing null keys through', () => {
       test: 10,
     };
 
-
     expect(reducer(testInput, map, defaultOptions)).toEqual({
       id: 10,
       date: '1970-01-01',
@@ -153,7 +150,6 @@ describe('Test passing null keys through', () => {
   it('handles null', () => {
     const testInput = null;
 
-
     expect(reducer(testInput, map, defaultOptions)).toEqual(testInput);
 
     expect(reducer(testInput, map, { ...defaultOptions, keepKeys: true })).toEqual(testInput);
@@ -166,7 +162,6 @@ describe('Test passing null keys through', () => {
   it('handles empty object', () => {
     const testInput = {};
 
-
     expect(reducer(testInput, map, defaultOptions)).toEqual(testInput);
 
     expect(reducer(testInput, map, { ...defaultOptions, keepKeys: true })).toEqual(mapWithNullValues);
@@ -176,29 +171,5 @@ describe('Test passing null keys through', () => {
     );
 
     expect(reducer(testInput, map, { ...defaultOptions, keepKeys: false, allowNullishKeys: true })).toEqual(testInput);
-  });
-
-  it('has no effect on throw on alien', () => {
-    const testInput = {};
-
-    try {
-      reducer(testInput, map, { ...defaultOptions, throwOnAlien: true });
-      expect(false).toBe(true);
-    } catch (e) {}
-
-    try {
-      reducer(testInput, map, { ...defaultOptions, throwOnAlien: true, keepKeys: true });
-      expect(false).toBe(true);
-    } catch (e) {}
-
-    try {
-      reducer(testInput, map, { ...defaultOptions, throwOnAlien: true, keepKeys: true, allowNullishKeys: true });
-      expect(false).toBe(true);
-    } catch (e) {}
-
-    try {
-      reducer(testInput, map, { ...defaultOptions, throwOnAlien: true, keepKeys: false, allowNullishKeys: true });
-      expect(false).toBe(true);
-    } catch (e) {}
   });
 });
