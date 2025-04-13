@@ -6,29 +6,62 @@ Recursively reduce an object to match a given map, plus config options, 1 js fil
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
+- [Installation & Usage](#installation--usage)
+  - [CommonJS with TypeScript (using `import` syntax)](#commonjs-with-typescript-using-import-syntax)
+  - [CommonJS](#commonjs)
+  - [ES Modules](#es-modules)
 - [Features](#features)
-- [Breaking changes 1 -> 2](#breaking-changes-1---2)
 - [Example use as an API output transformer](#example-use-as-an-api-output-transformer)
 - [Example usages](#example-usages)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+## Installation & Usage
+
+Install the package:
+
+```bash
+npm install object-reduce-by-map
+```
+
+### CommonJS with TypeScript (using `import` syntax)
+
+If you're using TypeScript with `module: commonjs` and `esModuleInterop`/`allowSyntheticDefaultImports` enabled, you can import like this:
+
+```ts
+import reduceByMap from 'object-reduce-by-map';
+
+const input = { foo: 1, bar: null };
+const map = { foo: Number };
+
+const output = reduceByMap(input, map);
+console.log(output); // { foo: 1 }
+```
+
+### CommonJS
+```typescript
+const reduceByMap = require('object-reduce-by-map');
+
+const input = { foo: 1, bar: null };
+const map = { foo: Number };
+
+const output = reduceByMap(input, map);
+console.log(output); // { foo: 1 }
+```
+### ES Modules
+```typescript
+import reduceByMap from 'object-reduce-by-map';
+
+const input = { foo: 1, bar: null };
+const map = { foo: Number };
+
+const output = reduceByMap(input, map);
+console.log(output); // { foo: 1 }
+```
+
 ## Features
-
-- Reduce a given object to match the structure and leaf data types of a given map
-- Delete non-matching input nodes
-- Optionally throw an error for non-matching nodes with throwErrorOnAlien
-- Provide options:
-    - keepKeys: Retain mismatched keys as null opposed to deleting them
-    - throwErrorOnAlien: Throw error on alien found
-    - allowNullishKeys: Preserve null or undefined keys in the output
-    - permitEmptyMap: If true, will not attempt to reduce the input when the map is an empty object
-    - permitUndefinedMap: If true, will not attempt to reduce the input when the map is undefined
-
-## Breaking changes 1 -> 2
-
-In version 1 a bug was discovered that permitted alien keys of null value into the output. This has now been resolved
-however may cause any tools using this helper tool to break, hence the major version bump.
+There are several options available to control how the reducer operates, the description for each can be read in the definition file:
+[reducer.d.ts](../src/reducer.d.ts)
 
 ## Example use as an API output transformer
 

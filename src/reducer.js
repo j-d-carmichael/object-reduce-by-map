@@ -38,30 +38,26 @@ const getType = (a) => {
  * @param key
  */
 const innerCompare = (input, mapItem, inputMaster, key) => {
-  if (Array.isArray(input)) { // recursively iterate of the array found
-    if (getType(mapItem) === 'array') {
-      if (typeof mapItem === 'function') {
-        return;
-      }
+  const keyExistsInMap = typeof mapItem !== 'undefined';
+
+  if (Array.isArray(input)) {
+    if (getType(mapItem) === 'array' && typeof mapItem !== 'function') {
       reducerWalk(input, mapItem, inputMaster);
     }
-  } else if (String(input) === '[object Object]') { // recursively walk over the object found
-    if (getType(mapItem) === 'object') {
-      if (typeof mapItem === 'function') {
-        return;
-      }
+  } else if (String(input) === '[object Object]') {
+    if (getType(mapItem) === 'object' && typeof mapItem !== 'function') {
       reducer(input, mapItem);
     }
   }
-  if (typeof mapItem === 'undefined') {
+
+  if (!keyExistsInMap) {
     if (savedOpts.throwErrorOnAlien) {
       throw new Error('Alien entry found in object');
     }
     delete inputMaster[key];
-  } else if (input == null || typeof input === 'undefined') {
-    if (savedOpts.allowNullishKeys) {
-      inputMaster[key] = input;
-    } else {
+  } else if (input == null) {
+    if (!savedOpts.allowNullishKeys) {
+      inputMaster[key] = undefined;
       delete inputMaster[key];
     }
   } else if (getType(mapItem) !== getType(input)) {

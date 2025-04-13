@@ -1,16 +1,24 @@
 {
   "name": "object-reduce-by-map",
   "description": "Recursively reduce an object to match a given map.",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "author": "John Carmichael",
   "license": "MIT",
   "type": "module",
-  "main": "src/reducer.js",
-  "types": "src/reducer.d.ts",
+  "main": "./dist/reducer.cjs",
+  "module": "./dist/reducer.mjs",
+  "types": "./dist/reducer.d.ts",
+  "exports": {
+    "require": "./dist/reducer.cjs",
+    "import": "./dist/reducer.mjs"
+  },
   "scripts": {
+    "build:cjs": "tsup src/reducer.js --format cjs --out-dir dist",
+    "build:mjs": "tsup src/reducer.js --format esm --out-dir dist",
+    "build": "npm run build:cjs && npm run build:mjs",
     "test": "vitest run",
-    "prepublish": "npm run build:readme:toc && npm run test",
-    "build:readme:toc": "npx doctoc ."
+    "prepublish": "npm run build:readme:toc && npm run build && npm run test",
+    "build:readme:toc": "npx doctoc ./docs/README.md"
   },
   "repository": {
     "type": "git",
@@ -21,6 +29,8 @@
   },
   "homepage": "https://github.com/johndcarmichael/object-reduce-by-map#readme",
   "devDependencies": {
+    "tsup": "^7.2.0",
+    "typescript": "^5.8.3",
     "vitest": "^3.0.7"
   }
 }

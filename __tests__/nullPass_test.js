@@ -88,4 +88,26 @@ describe('Reducer handling null values', () => {
   it('should throw an error when undefined is passed without allow nullish', () => {
     expect(() => reducer(undefined, map)).toThrow();
   });
+
+  it('should remove alien keys by default', () => {
+    const result = reducer({
+      validKey: 1,
+      alienKey: 'alien'
+    }, {
+      validKey: Number
+    });
+
+    expect(result).toEqual({ validKey: 1 });
+  });
+
+  it('should throw an error for alien keys if throwErrorOnAlien is true', () => {
+    expect(() =>
+      reducer({
+        validKey: 1,
+        alienKey: 'alien'
+      }, {
+        validKey: Number
+      }, { throwErrorOnAlien: true })
+    ).toThrow('Alien entry found in object');
+  });
 });
