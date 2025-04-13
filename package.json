@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/johndcarmichael/object-reduce-by-map#readme",
   "devDependencies": {
-    "tsup": "^7.2.0",
+    "tsup": "^8.4.0",
     "typescript": "^5.8.3",
     "vitest": "^3.0.7"
   }
