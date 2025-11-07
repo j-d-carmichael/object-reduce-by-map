@@ -458,9 +458,16 @@ When contributing, please:
 4. **Run full test suite** before submitting
 5. **Check coverage** to ensure new code is tested
 
-## Next Steps
+---
 
-- See [Examples](examples.md) for usage patterns
-- Check [API Reference](api-reference.md) for complete API
-- Read [Migration Guide](migration-guide.md) for upgrading
-- Review [Configuration Options](configuration.md)
+## Navigation
+
+**← Previous:** [Migration Guide](migration-guide.md)  
+**↑ Back to:** [Documentation Home](README.md)
+
+### Related Pages
+- [Installation & Basic Usage](installation.md) - Getting started
+- [TypeScript Interface Parsing](typescript-interfaces.md) - Use TS interfaces as schemas
+- [Configuration Options](configuration.md) - All available options
+- [Examples](examples.md) - Real-world usage examples
+- [API Reference](api-reference.md) - Complete API documentation

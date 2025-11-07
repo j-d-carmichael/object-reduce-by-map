@@ -161,9 +161,16 @@ const map = {
 };
 ```
 
-## Next Steps
+---
 
-- Learn about [TypeScript Interface Parsing](typescript-interfaces.md)
-- Explore [Configuration Options](configuration.md)
-- See more [Examples](examples.md)
-- Check the [API Reference](api-reference.md)
+## Navigation
+
+**→ Next:** [TypeScript Interface Parsing](typescript-interfaces.md)  
+**↑ Back to:** [Documentation Home](README.md)
+
+### Related Pages
+- [Configuration Options](configuration.md) - All available options
+- [Examples](examples.md) - Real-world usage examples
+- [API Reference](api-reference.md) - Complete API documentation
+- [Migration Guide](migration-guide.md) - Upgrading guide
+- [Testing & Distribution](testing.md) - How the package is tested

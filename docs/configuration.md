@@ -230,8 +230,16 @@ const options = {
 
 Use when the schema might not always be available or might be empty.
 
-## Next Steps
+---
 
-- See practical [Examples](examples.md)
-- Check the [API Reference](api-reference.md)
-- Learn about [TypeScript Interface Parsing](typescript-interfaces.md)
+## Navigation
+
+**← Previous:** [TypeScript Interface Parsing](typescript-interfaces.md)  
+**→ Next:** [Examples](examples.md)  
+**↑ Back to:** [Documentation Home](README.md)
+
+### Related Pages
+- [Installation & Basic Usage](installation.md) - Getting started
+- [API Reference](api-reference.md) - Complete API documentation
+- [Migration Guide](migration-guide.md) - Upgrading guide
+- [Testing & Distribution](testing.md) - How the package is tested

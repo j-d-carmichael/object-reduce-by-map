@@ -346,9 +346,16 @@ The package is designed for Node.js environments. For browser usage, ensure your
 - **Minimum:** Node.js 16+
 - **Recommended:** Node.js 18+ LTS
 
-## Next Steps
+---
 
-- See practical [Examples](examples.md)
-- Learn about [Configuration Options](configuration.md)
-- Read about [TypeScript Interface Parsing](typescript-interfaces.md)
-- Check the [Migration Guide](migration-guide.md)
+## Navigation
+
+**← Previous:** [Examples](examples.md)  
+**→ Next:** [Migration Guide](migration-guide.md)  
+**↑ Back to:** [Documentation Home](README.md)
+
+### Related Pages
+- [Installation & Basic Usage](installation.md) - Getting started
+- [TypeScript Interface Parsing](typescript-interfaces.md) - Use TS interfaces as schemas
+- [Configuration Options](configuration.md) - All available options
+- [Testing & Distribution](testing.md) - How the package is tested

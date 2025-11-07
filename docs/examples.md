@@ -445,8 +445,16 @@ app.get('/api/products/:id', async (req, res) => {
 
 For the most up-to-date examples, check the [test files](https://github.com/j-d-carmichael/object-reduce-by-map/tree/master/__tests__) in the repository.
 
-## Next Steps
+---
 
-- Learn about [Configuration Options](configuration.md)
-- Check the [API Reference](api-reference.md)
-- Read about [TypeScript Interface Parsing](typescript-interfaces.md)
+## Navigation
+
+**← Previous:** [Configuration Options](configuration.md)  
+**→ Next:** [API Reference](api-reference.md)  
+**↑ Back to:** [Documentation Home](README.md)
+
+### Related Pages
+- [Installation & Basic Usage](installation.md) - Getting started
+- [TypeScript Interface Parsing](typescript-interfaces.md) - Use TS interfaces as schemas
+- [Migration Guide](migration-guide.md) - Upgrading guide
+- [Testing & Distribution](testing.md) - How the package is tested

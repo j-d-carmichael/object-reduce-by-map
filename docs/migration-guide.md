@@ -360,9 +360,16 @@ const result = await reducer.fromInterface(input, interfaceString);
 
 **Solution:** `npm install typescript`
 
-## Next Steps
+---
 
-- Review the [API Reference](api-reference.md)
-- Check out [Examples](examples.md) with updated patterns
-- Learn about [Configuration Options](configuration.md)
-- Read about [TypeScript Interface Parsing](typescript-interfaces.md)
+## Navigation
+
+**← Previous:** [API Reference](api-reference.md)  
+**→ Next:** [Testing & Distribution](testing.md)  
+**↑ Back to:** [Documentation Home](README.md)
+
+### Related Pages
+- [Installation & Basic Usage](installation.md) - Getting started
+- [TypeScript Interface Parsing](typescript-interfaces.md) - Use TS interfaces as schemas
+- [Configuration Options](configuration.md) - All available options
+- [Examples](examples.md) - Real-world usage examples

@@ -324,9 +324,16 @@ app.get('/api/users/:id', async (req, res) => {
 });
 ```
 
-## Next Steps
+---
 
-- See more [Examples](examples.md)
-- Learn about [Configuration Options](configuration.md)
-- Check the [API Reference](api-reference.md)
-- Read the [Migration Guide](migration-guide.md) for upgrading
+## Navigation
+
+**← Previous:** [Installation & Basic Usage](installation.md)  
+**→ Next:** [Configuration Options](configuration.md)  
+**↑ Back to:** [Documentation Home](README.md)
+
+### Related Pages
+- [Examples](examples.md) - Real-world usage examples
+- [API Reference](api-reference.md) - Complete API documentation
+- [Migration Guide](migration-guide.md) - Upgrading guide
+- [Testing & Distribution](testing.md) - How the package is tested
