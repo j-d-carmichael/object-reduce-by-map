@@ -1,16 +1,15 @@
 # object-reduce-by-map aka OBR-M
 
+[![npm version](https://img.shields.io/npm/v/object-reduce-by-map.svg)](https://www.npmjs.com/package/object-reduce-by-map)
+
 Recursively reduce an object to match a given map. Perfect for filtering API responses and preventing data leakage. The map can be a JSON schema or a TypeScript interface.
 
-[![npm version](https://img.shields.io/npm/v/object-reduce-by-map.svg)](https://www.npmjs.com/package/object-reduce-by-map)
-[![npm downloads](https://img.shields.io/npm/dm/object-reduce-by-map.svg)](https://www.npmjs.com/package/object-reduce-by-map)
-
-**📚 [Full Documentation](https://j-d-carmichael.github.io/object-reduce-by-map)**
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
+- [Full Documentation](#full-documentation)
 - [Quick Start](#quick-start)
 - [Features](#features)
 - [JSON Schema Example:](#json-schema-example)
@@ -18,6 +17,10 @@ Recursively reduce an object to match a given map. Perfect for filtering API res
 - [Documentation](#documentation)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+## Full Documentation
+
+**📚 [Full Documentation](https://j-d-carmichael.github.io/object-reduce-by-map)**
 
 ## Quick Start
 
