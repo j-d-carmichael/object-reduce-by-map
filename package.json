@@ -17,7 +17,7 @@
     "build:types": "cp src/reducer.d.ts dist/reducer.d.ts && cp src/interfaceParser.d.ts dist/interfaceParser.d.ts",
     "test": "vitest run",
     "prepublish": "npm run build:readme:toc && npm run build && npm run test",
-    "build:readme:toc": "npx doctoc ./docs/README.md"
+    "build:readme:toc": "npx doctoc ./docs/README.md && npx doctoc ./README.md"
   },
   "repository": {
     "type": "git",

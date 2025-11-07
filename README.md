@@ -1,11 +1,23 @@
 # object-reduce-by-map aka OBR-M
 
-Recursively reduce an object to match a given map. Perfect for filtering API responses and preventing data leakage.
+Recursively reduce an object to match a given map. Perfect for filtering API responses and preventing data leakage. The map can be a JSON schema or a TypeScript interface.
 
 [![npm version](https://img.shields.io/npm/v/object-reduce-by-map.svg)](https://www.npmjs.com/package/object-reduce-by-map)
 [![npm downloads](https://img.shields.io/npm/dm/object-reduce-by-map.svg)](https://www.npmjs.com/package/object-reduce-by-map)
 
 **📚 [Full Documentation](https://j-d-carmichael.github.io/object-reduce-by-map)**
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [JSON Schema Example:](#json-schema-example)
+- [TypeScript Interface String Parsing](#typescript-interface-string-parsing)
+- [Documentation](#documentation)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Quick Start
 
@@ -41,7 +53,7 @@ const result = reduceByMap(input, map);
 ✅ **TypeScript support** - Full type definitions included  
 ✅ **Tiny bundle size** - ~10 KB (core), TypeScript optional
 
-## Example:
+## JSON Schema Example:
 
 A real world use case here is as a middleware in ExpressJS, the middleware would ensure the output does not contain data it should not output.
 
@@ -103,7 +115,7 @@ it('Should handle null leaf values ie remove them', () => {
 
 ```
 
-## NEW: TypeScript Interface Parsing
+## TypeScript Interface String Parsing
 
 Use TypeScript interfaces directly as schemas:
 
