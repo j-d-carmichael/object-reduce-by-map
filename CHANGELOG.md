@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 3.3.0 (2025-11-07)
+* JSON Schema parsing, pass in a json schema object or typescript interface string
+
 ## 3.2.0 (2025-11-07)
 * TypeScript interface parsing, pass in a json schema object or typescript interface string
 

@@ -81,8 +81,8 @@ console.log(output); // { name: 'John', email: 'john@example.com' }
 ## Example use as an API output transformer
 
 An example use case of this package can be found in the TypeScript openapi-nodegen templates as an output
-transformer: [openapi-nodegen-typescript-server](https://github.com/acr-lfr/openapi-nodegen-typescript-server/blob/master/src/http/nodegen/routes/___op.ts.njk#L31)
+transformer: [Generate-it typescript server](https://github.com/acr-lfr/generate-it-typescript-server/blob/main/src/http/nodegen/middleware/inferResponseType.ts.njk)
 
 ## More Examples
 
-The most up-to-date examples can always be [found in the tests of this project](https://github.com/j-d-carmichael/object-reduce-by-map/tree/master/__tests__)
+The most up-to-date examples can always be found in the tests of this project.
