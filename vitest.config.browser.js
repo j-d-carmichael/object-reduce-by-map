@@ -15,6 +15,10 @@ export default defineConfig({
       headless: true,
     },
     include: ['**/*_test.js', '**/*_test.ts'],
-    exclude: ['node_modules', 'dist'],
+    exclude: [
+      'node_modules',
+      'dist',
+      '**/*dist_test.js', // Excludes Node.js-specific tests (uses fs module)
+    ],
   }
 });
