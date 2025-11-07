@@ -1,5 +1,8 @@
 # ChangeLog
 
+## 3.2.0 (2025-11-07)
+* TypeScript interface parsing, pass in a json schema object or typescript interface string
+
 ## 3.1.0 (2025-04-13)
 * Supports ESM & CJS imports [README.md](docs/README.md)
 * Resolves: https://github.com/j-d-carmichael/object-reduce-by-map/issues/10

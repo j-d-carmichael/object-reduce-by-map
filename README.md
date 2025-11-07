@@ -1,13 +1,45 @@
-# object-reduce-by-map
+# object-reduce-by-map aka OBR-M
 
-Recursively reduce an object to match a given map, plus config options, 1 js file (with types)
+Recursively reduce an object to match a given map. Perfect for filtering API responses and preventing data leakage.
 
-https://www.npmjs.com/package/object-reduce-by-map
+[![npm version](https://img.shields.io/npm/v/object-reduce-by-map.svg)](https://www.npmjs.com/package/object-reduce-by-map)
+[![npm downloads](https://img.shields.io/npm/dm/object-reduce-by-map.svg)](https://www.npmjs.com/package/object-reduce-by-map)
 
-Supports CommonJS and ESM, see the instal and usage guide.
+**📚 [Full Documentation](https://j-d-carmichael.github.io/object-reduce-by-map)**
 
-Full docs: [Docs: Object Reduce By Map](https://j-d-carmichael.github.io/object-reduce-by-map).
+## Quick Start
 
+```bash
+npm install object-reduce-by-map
+```
+
+```typescript
+import reduceByMap from 'object-reduce-by-map';
+
+const input = {
+  name: 'John',
+  email: 'john@example.com',
+  password: 'secret123',  // Will be removed
+  internalId: 'xyz'       // Will be removed
+};
+
+const map = { name: String, email: String };
+
+const result = reduceByMap(input, map);
+// { name: 'John', email: 'john@example.com' }
+```
+
+## Features
+
+✅ **Map-based object reduction** - Define schemas using JavaScript constructors  
+✅ **TypeScript interface parsing** - Use TypeScript interfaces directly as schemas (NEW!)  
+✅ **Nested object support** - Handle deeply nested structures  
+✅ **Array handling** - Process arrays of objects  
+✅ **Type validation** - Ensure correct types  
+✅ **Flexible options** - Control behavior with various configuration options  
+✅ **Zero dependencies** - Core functionality has no dependencies  
+✅ **TypeScript support** - Full type definitions included  
+✅ **Tiny bundle size** - ~10 KB (core), TypeScript optional
 
 ## Example:
 
@@ -70,3 +102,44 @@ it('Should handle null leaf values ie remove them', () => {
 });
 
 ```
+
+## NEW: TypeScript Interface Parsing
+
+Use TypeScript interfaces directly as schemas:
+
+```typescript
+import reducer from 'object-reduce-by-map';
+
+const interfaceString = `
+  interface User {
+    name: string;
+    email: string;
+    age: number;
+  }
+`;
+
+const input = {
+  name: 'John Doe',
+  email: 'john@example.com',
+  age: 30,
+  password: 'secret123',  // Will be removed
+  internalId: 'xyz'       // Will be removed
+};
+
+const result = await reducer.fromInterface(input, interfaceString);
+// { name: 'John Doe', email: 'john@example.com', age: 30 }
+```
+
+**Requires:** `npm install typescript` (optional peer dependency)
+
+**[Learn more about TypeScript Interface Parsing →](https://j-d-carmichael.github.io/object-reduce-by-map/#/typescript-interfaces)**
+
+## Documentation
+
+- **[Installation & Basic Usage](https://j-d-carmichael.github.io/object-reduce-by-map/#/installation)** - Get started
+- **[TypeScript Interface Parsing](https://j-d-carmichael.github.io/object-reduce-by-map/#/typescript-interfaces)** - Use TS interfaces as schemas
+- **[Configuration Options](https://j-d-carmichael.github.io/object-reduce-by-map/#/configuration)** - All available options
+- **[Examples](https://j-d-carmichael.github.io/object-reduce-by-map/#/examples)** - Real-world examples
+- **[API Reference](https://j-d-carmichael.github.io/object-reduce-by-map/#/api-reference)** - Complete API docs
+- **[Migration Guide](https://j-d-carmichael.github.io/object-reduce-by-map/#/migration-guide)** - Upgrading guide
+- **[Testing & Distribution](https://j-d-carmichael.github.io/object-reduce-by-map/#/testing)** - How it's tested

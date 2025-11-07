@@ -1,0 +1,8 @@
+- [Home](/)
+- [Installation & Basic Usage](installation.md)
+- [TypeScript Interface Parsing](typescript-interfaces.md)
+- [Configuration Options](configuration.md)
+- [Examples](examples.md)
+- [API Reference](api-reference.md)
+- [Migration Guide](migration-guide.md)
+- [Testing & Distribution](testing.md)

@@ -180,4 +180,30 @@ const reduceByMap = (input, map, options = {}) => {
   return input;
 };
 
+import parseInterfaceToMap from './interfaceParser.js';
+
+/**
+ * Reduce an object using a TypeScript interface string as the map
+ * @param {object|array} input - The input array or object
+ * @param {string} interfaceString - TypeScript interface(s) as a string
+ * @param {string} [interfaceName] - Optional: specific interface name to use from the string
+ * @param {object} [options] - Options object for the package (same as reduceByMap)
+ * @return {Promise<*>}
+ */
+const reduceByInterface = async (input, interfaceString, interfaceName, options) => {
+  // Handle overloaded signature: (input, interfaceString, options)
+  if (typeof interfaceName === 'object' && !Array.isArray(interfaceName)) {
+    options = interfaceName;
+    interfaceName = undefined;
+  }
+  
+  const map = await parseInterfaceToMap(interfaceString, interfaceName);
+  return reduceByMap(input, map, options);
+};
+
+// Attach the interface parser as a method
+reduceByMap.fromInterface = reduceByInterface;
+reduceByMap.parseInterface = parseInterfaceToMap;
+
 export default reduceByMap;
+export { reduceByMap, reduceByInterface, parseInterfaceToMap };

@@ -1,6 +1,8 @@
+var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
 var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
 var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __export = (target, all) => {
   for (var name in all)
@@ -14,14 +16,204 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
 // src/reducer.js
 var reducer_exports = {};
 __export(reducer_exports, {
-  default: () => reducer_default
+  default: () => reducer_default,
+  parseInterfaceToMap: () => interfaceParser_default,
+  reduceByInterface: () => reduceByInterface,
+  reduceByMap: () => reduceByMap
 });
 module.exports = __toCommonJS(reducer_exports);
+
+// src/interfaceParser.js
+var ts = null;
+var loadTypeScript = async () => {
+  if (ts) {
+    return ts;
+  }
+  try {
+    const tsModule = await import("typescript");
+    ts = tsModule.default || tsModule;
+    return ts;
+  } catch (error) {
+    throw new Error(
+      "TypeScript is required to parse interface strings. Please install it: npm install typescript\nOriginal error: " + error.message
+    );
+  }
+};
+var mapTypeNodeToConstructor = (typeNode, sourceFile, interfaceMap, parseInterfaceRecursive) => {
+  if (!typeNode) {
+    return Object;
+  }
+  if (ts && ts.isArrayTypeNode(typeNode)) {
+    const elementType = mapTypeNodeToConstructor(typeNode.elementType, sourceFile, interfaceMap, parseInterfaceRecursive);
+    return [elementType];
+  }
+  if (ts && ts.isTypeReferenceNode(typeNode)) {
+    const typeName = typeNode.typeName.getText(sourceFile);
+    if (typeName === "Array" && typeNode.typeArguments && typeNode.typeArguments.length > 0) {
+      const elementType = mapTypeNodeToConstructor(typeNode.typeArguments[0], sourceFile, interfaceMap, parseInterfaceRecursive);
+      return [elementType];
+    }
+    if (interfaceMap && interfaceMap.has(typeName) && parseInterfaceRecursive) {
+      const referencedInterface = parseInterfaceRecursive(typeName);
+      if (referencedInterface && Object.keys(referencedInterface).length > 0) {
+        return referencedInterface;
+      }
+    }
+    return Object;
+  }
+  if (ts && ts.isUnionTypeNode(typeNode)) {
+    for (const type of typeNode.types) {
+      if (ts.isLiteralTypeNode(type) && type.literal.kind === ts.SyntaxKind.NullKeyword) {
+        continue;
+      }
+      if (type.kind === ts.SyntaxKind.UndefinedKeyword) {
+        continue;
+      }
+      return mapTypeNodeToConstructor(type, sourceFile, interfaceMap, parseInterfaceRecursive);
+    }
+    return Object;
+  }
+  if (ts && ts.isIntersectionTypeNode(typeNode)) {
+    return Object;
+  }
+  if (ts && ts.isTypeLiteralNode(typeNode)) {
+    return parseTypeLiteral(typeNode, sourceFile, interfaceMap, parseInterfaceRecursive);
+  }
+  if (!ts) return Object;
+  switch (typeNode.kind) {
+    case ts.SyntaxKind.StringKeyword:
+      return String;
+    case ts.SyntaxKind.NumberKeyword:
+      return Number;
+    case ts.SyntaxKind.BooleanKeyword:
+      return Boolean;
+    case ts.SyntaxKind.ObjectKeyword:
+    case ts.SyntaxKind.AnyKeyword:
+    case ts.SyntaxKind.UnknownKeyword:
+      return Object;
+    case ts.SyntaxKind.NullKeyword:
+    case ts.SyntaxKind.UndefinedKeyword:
+      return null;
+    default:
+      return Object;
+  }
+};
+var parseTypeLiteral = (typeLiteral, sourceFile, interfaceMap, parseInterfaceRecursive) => {
+  const result = {};
+  for (const member of typeLiteral.members) {
+    if (ts && ts.isPropertySignature(member) && member.name) {
+      const propertyName = member.name.getText(sourceFile);
+      const propertyType = member.type;
+      result[propertyName] = mapTypeNodeToConstructor(propertyType, sourceFile, interfaceMap, parseInterfaceRecursive);
+    }
+    if (ts && ts.isIndexSignatureDeclaration(member)) {
+      return Object;
+    }
+  }
+  return result;
+};
+var parseInterface = (interfaceDecl, sourceFile, interfaceMap, parseInterfaceRecursive) => {
+  const result = {};
+  if (interfaceDecl.heritageClauses) {
+    for (const heritage of interfaceDecl.heritageClauses) {
+      for (const type of heritage.types) {
+        const baseInterfaceName = type.expression.getText(sourceFile);
+        const baseInterface = parseInterfaceRecursive(baseInterfaceName);
+        if (baseInterface) {
+          Object.assign(result, baseInterface);
+        }
+      }
+    }
+  }
+  for (const member of interfaceDecl.members) {
+    if (ts && ts.isPropertySignature(member) && member.name) {
+      const propertyName = member.name.getText(sourceFile);
+      const propertyType = member.type;
+      result[propertyName] = mapTypeNodeToConstructor(propertyType, sourceFile, interfaceMap, parseInterfaceRecursive);
+    }
+    if (ts && ts.isIndexSignatureDeclaration(member)) {
+      return Object;
+    }
+  }
+  return result;
+};
+var parseTypeScriptSource = (sourceCode, typescript) => {
+  const sourceFile = typescript.createSourceFile(
+    "temp.ts",
+    sourceCode,
+    typescript.ScriptTarget.Latest,
+    true
+  );
+  const interfaceMap = /* @__PURE__ */ new Map();
+  const interfaceNodes = /* @__PURE__ */ new Map();
+  const visit = (node) => {
+    if (typescript.isInterfaceDeclaration(node) && node.name) {
+      const interfaceName = node.name.getText(sourceFile);
+      interfaceNodes.set(interfaceName, node);
+      interfaceMap.set(interfaceName, null);
+    }
+    typescript.forEachChild(node, visit);
+  };
+  visit(sourceFile);
+  const parseInterfaceRecursive = (interfaceName) => {
+    if (interfaceMap.get(interfaceName) !== null) {
+      return interfaceMap.get(interfaceName);
+    }
+    const node = interfaceNodes.get(interfaceName);
+    if (!node) {
+      return null;
+    }
+    interfaceMap.set(interfaceName, {});
+    const parsed = parseInterface(node, sourceFile, interfaceMap, parseInterfaceRecursive);
+    interfaceMap.set(interfaceName, parsed);
+    return parsed;
+  };
+  for (const interfaceName of interfaceNodes.keys()) {
+    parseInterfaceRecursive(interfaceName);
+  }
+  return interfaceMap;
+};
+var parseInterfaceToMap = async (interfaceString, interfaceName) => {
+  if (typeof interfaceString !== "string") {
+    throw new Error("interfaceString must be a string");
+  }
+  const typescript = await loadTypeScript();
+  const interfaceMap = parseTypeScriptSource(interfaceString, typescript);
+  if (interfaceMap.size === 0) {
+    throw new Error("No interfaces found in the provided string");
+  }
+  if (interfaceName) {
+    const result2 = interfaceMap.get(interfaceName);
+    if (!result2) {
+      throw new Error(`Interface "${interfaceName}" not found. Available interfaces: ${Array.from(interfaceMap.keys()).join(", ")}`);
+    }
+    return result2;
+  }
+  if (interfaceMap.size === 1) {
+    return Array.from(interfaceMap.values())[0];
+  }
+  const result = {};
+  for (const [name, map] of interfaceMap.entries()) {
+    result[name] = map;
+  }
+  return result;
+};
+var interfaceParser_default = parseInterfaceToMap;
+
+// src/reducer.js
 var savedOpts;
 var getType = (a) => {
   if (typeof a === "function") {
@@ -141,4 +333,20 @@ var reduceByMap = (input, map, options = {}) => {
   }
   return input;
 };
+var reduceByInterface = async (input, interfaceString, interfaceName, options) => {
+  if (typeof interfaceName === "object" && !Array.isArray(interfaceName)) {
+    options = interfaceName;
+    interfaceName = void 0;
+  }
+  const map = await interfaceParser_default(interfaceString, interfaceName);
+  return reduceByMap(input, map, options);
+};
+reduceByMap.fromInterface = reduceByInterface;
+reduceByMap.parseInterface = interfaceParser_default;
 var reducer_default = reduceByMap;
+// Annotate the CommonJS export names for ESM import in node:
+0 && (module.exports = {
+  parseInterfaceToMap,
+  reduceByInterface,
+  reduceByMap
+});
