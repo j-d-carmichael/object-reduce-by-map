@@ -299,7 +299,9 @@ Error: Interface "Product" not found. Available interfaces: User, Address
 - **Subsequent calls**: <1ms (TypeScript cached in memory)
 - **No impact** on core reducer performance
 
-## Real-World Example
+## Real-World Examples
+
+### API Response Filtering
 
 ```typescript
 // API route handler
@@ -323,6 +325,141 @@ app.get('/api/users/:id', async (req, res) => {
   res.json(safeUser);
 });
 ```
+
+### LLM Output Sanitization
+
+One powerful use case is sanitizing LLM (Large Language Model) outputs. LLMs often hallucinate and add extra fields or unexpected data to their JSON responses. With interface parsing, you can ensure the output strictly matches your expected schema.
+
+```typescript
+import reducer from 'object-reduce-by-map';
+
+// Define the expected structure for LLM output
+const productInterface = `
+  interface Product {
+    id: string;
+    name: string;
+    description: string;
+    price: number;
+    category: string;
+  }
+`;
+
+// Call LLM API (e.g., OpenAI, Anthropic, etc.)
+const llmResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+  method: 'POST',
+  headers: {
+    'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    model: 'gpt-4',
+    messages: [{
+      role: 'user',
+      content: 'Generate a product in JSON format matching this interface: ' + productInterface
+    }],
+    response_format: { type: 'json_object' }
+  })
+});
+
+const data = await llmResponse.json();
+const llmOutput = JSON.parse(data.choices[0].message.content);
+
+// LLM might return:
+// {
+//   id: "prod-123",
+//   name: "Widget",
+//   description: "A useful widget",
+//   price: 29.99,
+//   category: "Tools",
+//   confidence: 0.95,              // ❌ Hallucinated field
+//   reasoning: "Based on...",      // ❌ Hallucinated field
+//   metadata: { source: "ai" }     // ❌ Hallucinated field
+// }
+
+// Strip out hallucinated fields to match the interface exactly
+const sanitizedProduct = await reducer.fromInterface(llmOutput, productInterface);
+
+// Result: Only the expected fields
+// {
+//   id: "prod-123",
+//   name: "Widget",
+//   description: "A useful widget",
+//   price: 29.99,
+//   category: "Tools"
+// }
+
+console.log(sanitizedProduct);
+```
+
+**Why This Matters for LLMs:**
+
+- ✅ **Prevents hallucinated fields** - LLMs often add extra fields like `confidence`, `reasoning`, `metadata`
+- ✅ **Ensures type safety** - Guarantees the output matches your TypeScript interface
+- ✅ **Validates structure** - Removes unexpected nested objects or arrays
+- ✅ **Simplifies integration** - No need to manually validate every field
+- ✅ **Works with any LLM** - OpenAI, Anthropic, Cohere, local models, etc.
+
+**Common LLM Hallucination Patterns:**
+
+```typescript
+// LLMs often add these types of extra fields:
+{
+  // Expected fields
+  name: "Product",
+  price: 100,
+  
+  // Hallucinated fields (will be removed)
+  confidence: 0.95,
+  reasoning: "I chose this because...",
+  metadata: { generated_by: "gpt-4" },
+  _internal: { tokens: 150 },
+  source: "ai",
+  timestamp: "2024-01-01"
+}
+```
+
+**Multi-Step LLM Workflow:**
+
+```typescript
+// Step 1: Define your data structure
+const orderInterface = `
+  interface OrderItem {
+    productId: string;
+    quantity: number;
+    price: number;
+  }
+  
+  interface Order {
+    orderId: string;
+    customerEmail: string;
+    items: OrderItem[];
+    total: number;
+  }
+`;
+
+// Step 2: Ask LLM to extract order from natural language
+const userMessage = "I want to order 2 widgets at $10 each and 1 gadget at $20";
+const llmExtraction = await callLLM(
+  `Extract order information from this message and return JSON matching this interface: ${orderInterface}\n\nMessage: ${userMessage}`
+);
+
+// Step 3: Sanitize LLM output to match interface exactly
+const validOrder = await reducer.fromInterface(
+  JSON.parse(llmExtraction),
+  orderInterface,
+  'Order'
+);
+
+// Step 4: Safely process the validated order
+await processOrder(validOrder);
+```
+
+This approach is particularly valuable when:
+- Building AI-powered APIs
+- Processing structured data from LLM responses
+- Ensuring consistent output formats
+- Validating AI-generated content before storage
+- Creating type-safe LLM integrations
 
 ---
 

@@ -14,6 +14,7 @@ Recursively reduce an object to match a given map. Perfect for filtering API res
 - [Features](#features)
 - [JSON Schema Example:](#json-schema-example)
 - [TypeScript Interface String Parsing](#typescript-interface-string-parsing)
+  - [Perfect for LLM Output Sanitization](#perfect-for-llm-output-sanitization)
 - [Documentation](#documentation)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -147,7 +148,19 @@ const result = await reducer.fromInterface(input, interfaceString);
 
 **Requires:** `npm install typescript` (optional peer dependency)
 
-**[Learn more about TypeScript Interface Parsing →](https://j-d-carmichael.github.io/object-reduce-by-map/#/typescript-interfaces)**
+### Perfect for LLM Output Sanitization
+
+A powerful use case is cleaning up LLM (Large Language Model) responses. LLMs often hallucinate and add extra fields to their JSON output. Use interface parsing to strip out hallucinated fields and ensure the output strictly matches your expected schema:
+
+```typescript
+// LLM returns extra fields like 'confidence', 'reasoning', 'metadata'
+const llmOutput = await callLLM('Generate a product...');
+
+// Strip hallucinated fields to match interface exactly
+const cleanOutput = await reducer.fromInterface(llmOutput, productInterface);
+```
+
+**[Learn more about TypeScript Interface Parsing & LLM Sanitization →](https://j-d-carmichael.github.io/object-reduce-by-map/#/typescript-interfaces)**
 
 ## Documentation
 
