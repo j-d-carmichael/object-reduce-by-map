@@ -1,5 +1,6 @@
 - [Home](/)
 - [Installation & Basic Usage](installation.md)
+- [JSON Schema Support](json-schema.md)
 - [TypeScript Interface Parsing](typescript-interfaces.md)
 - [Configuration Options](configuration.md)
 - [Examples](examples.md)

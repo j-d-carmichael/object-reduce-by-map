@@ -66,12 +66,34 @@ export function reduceByInterface(
 export function parseInterfaceToMap(interfaceString: string, interfaceName?: string): Promise<object>;
 
 /**
+ * Parse a JSON Schema object to a map object
+ * Note: Schema must be dereferenced (no $ref)
+ */
+export function parseJsonSchemaToMap(schema: object): object;
+
+/**
+ * Reduce an object using a JSON Schema object as the map
+ * Note: Schema must be dereferenced (no $ref)
+ * @param input - The input array or object
+ * @param jsonSchema - JSON Schema object (dereferenced, no $ref)
+ * @param options - Options object for the package (same as reduceByMap)
+ * @return The reduced object/array
+ */
+export function reduceByJsonSchema(
+  input: any,
+  jsonSchema: object,
+  options?: Options
+): any;
+
+/**
  * Main reducer function with attached methods
  */
 interface ReduceByMap {
   (input: object, map: object, options?: Options): object;
   fromInterface: typeof reduceByInterface;
+  fromJsonSchema: typeof reduceByJsonSchema;
   parseInterface: typeof parseInterfaceToMap;
+  parseJsonSchema: typeof parseJsonSchemaToMap;
 }
 
 declare const reduceByMap: ReduceByMap;

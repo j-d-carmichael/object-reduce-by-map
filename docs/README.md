@@ -48,8 +48,9 @@ console.log(output); // { name: 'John', email: 'john@example.com' }
 
 ## Documentation
 
-- **[Installation & Basic Usage](installation.md)** - Get started with CommonJS, ESM, and TypeScript
-- **[TypeScript Interface Parsing](typescript-interfaces.md)** - Use TypeScript interfaces as schemas (NEW!)
+- **[Installation & Basic Usage](installation.md)** - Get started with all three input methods
+- **[JSON Schema Support](json-schema.md)** - Use JSON Schema objects as input (NEW!)
+- **[TypeScript Interface Parsing](typescript-interfaces.md)** - Use TypeScript interfaces as schemas
 - **[Configuration Options](configuration.md)** - All available options and their usage
 - **[Examples](examples.md)** - Real-world examples and use cases
 - **[API Reference](api-reference.md)** - Complete API documentation

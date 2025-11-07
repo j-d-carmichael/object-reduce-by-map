@@ -2,7 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/object-reduce-by-map.svg)](https://www.npmjs.com/package/object-reduce-by-map)
 
-Recursively reduce an object to match a given map. Perfect for filtering API responses and preventing data leakage. The map can be a JSON schema or a TypeScript interface.
+Recursively reduce an object to match a given map (Map, JSON Schema, TypeScript Interface). Perfect for filtering API responses and preventing data leakage.
 
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
@@ -11,8 +11,10 @@ Recursively reduce an object to match a given map. Perfect for filtering API res
 
 - [Full Documentation](#full-documentation)
 - [Quick Start](#quick-start)
+  - [Three Ways to Define Your Schema](#three-ways-to-define-your-schema)
 - [Features](#features)
-- [JSON Schema Example:](#json-schema-example)
+- [Map-Based Filtering Example](#map-based-filtering-example)
+- [JSON Schema Support](#json-schema-support)
 - [TypeScript Interface String Parsing](#typescript-interface-string-parsing)
   - [Perfect for LLM Output Sanitization](#perfect-for-llm-output-sanitization)
 - [Documentation](#documentation)
@@ -45,10 +47,50 @@ const result = reduceByMap(input, map);
 // { name: 'John', email: 'john@example.com' }
 ```
 
+### Three Ways to Define Your Schema
+
+**1. Direct Map (Fastest ⚡)**
+```typescript
+const map = { name: String, email: String, age: Number };
+const result = reduceByMap(input, map);
+```
+This is the **fastest** way to use object-reduce-by-map. Use this when you already have a map or can generate one.
+
+**2. JSON Schema (Convenient)**
+```typescript
+const schema = {
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    email: { type: 'string' }
+  }
+};
+const result = reducer.fromJsonSchema(input, schema);
+```
+Converts JSON Schema to a map. Slightly slower due to parsing overhead.
+
+**3. TypeScript Interface (Convenient, Async)**
+```typescript
+const interfaceString = `
+  interface User {
+    name: string;
+    email: string;
+  }
+`;
+const result = await reducer.fromInterface(input, interfaceString);
+```
+Parses TypeScript interfaces. Slowest option (~600ms first call, <1ms cached) but very convenient.
+
+**Performance Comparison:**
+- Direct map: **<1ms** ⚡ (recommended for production)
+- JSON Schema: **~1-2ms** (parsing overhead)
+- TypeScript Interface: **~600ms first call, <1ms cached** (requires TypeScript peer dependency)
+
 ## Features
 
-✅ **Map-based object reduction** - Define schemas using JavaScript constructors  
-✅ **TypeScript interface parsing** - Use TypeScript interfaces directly as schemas (NEW!)  
+✅ **Map-based object reduction** - Define schemas using JavaScript constructors (fastest)  
+✅ **JSON Schema support** - Use JSON Schema objects as input (NEW!)  
+✅ **TypeScript interface parsing** - Use TypeScript interfaces directly as schemas  
 ✅ **Nested object support** - Handle deeply nested structures  
 ✅ **Array handling** - Process arrays of objects  
 ✅ **Type validation** - Ensure correct types  
@@ -57,14 +99,14 @@ const result = reduceByMap(input, map);
 ✅ **TypeScript support** - Full type definitions included  
 ✅ **Tiny bundle size** - ~10 KB (core), TypeScript optional
 
-## JSON Schema Example:
+## Map-Based Filtering Example
 
 A real world use case here is as a middleware in ExpressJS, the middleware would ensure the output does not contain data it should not output.
 
 It can be considered an accidental safety net.
 
 ```typescript
-// A map (typically auto generated from an OpenAPI scec):
+// A map using JavaScript type constructors (typically auto generated from an OpenAPI spec):
 const map = {
   starts: Number,
   wins: Number,
@@ -119,6 +161,41 @@ it('Should handle null leaf values ie remove them', () => {
 
 ```
 
+## JSON Schema Support
+
+Use dereferenced JSON Schema objects as input:
+
+```typescript
+import reducer from 'object-reduce-by-map';
+
+const schema = {
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    email: { type: 'string' },
+    age: { type: 'number' }
+  }
+};
+
+const input = {
+  name: 'John Doe',
+  email: 'john@example.com',
+  age: 30,
+  password: 'secret123',  // Will be removed
+  internalId: 'xyz'       // Will be removed
+};
+
+const result = reducer.fromJsonSchema(input, schema);
+// { name: 'John Doe', email: 'john@example.com', age: 30 }
+```
+
+**Note:** Schema must be dereferenced (no `$ref`). This is a synchronous operation with minimal overhead (~1-2ms).
+
+**Perfect for:**
+- OpenAPI/Swagger schemas
+- Existing JSON Schema validation
+- API contract enforcement
+
 ## TypeScript Interface String Parsing
 
 Use TypeScript interfaces directly as schemas:
@@ -164,7 +241,8 @@ const cleanOutput = await reducer.fromInterface(llmOutput, productInterface);
 
 ## Documentation
 
-- **[Installation & Basic Usage](https://j-d-carmichael.github.io/object-reduce-by-map/#/installation)** - Get started
+- **[Installation & Basic Usage](https://j-d-carmichael.github.io/object-reduce-by-map/#/installation)** - Get started with all three input methods
+- **[JSON Schema Support](https://j-d-carmichael.github.io/object-reduce-by-map/#/json-schema)** - Use JSON Schema objects (NEW!)
 - **[TypeScript Interface Parsing](https://j-d-carmichael.github.io/object-reduce-by-map/#/typescript-interfaces)** - Use TS interfaces as schemas
 - **[Configuration Options](https://j-d-carmichael.github.io/object-reduce-by-map/#/configuration)** - All available options
 - **[Examples](https://j-d-carmichael.github.io/object-reduce-by-map/#/examples)** - Real-world examples

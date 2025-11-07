@@ -175,6 +175,66 @@ var parseInterfaceToMap = async (interfaceString, interfaceName) => {
 };
 var interfaceParser_default = parseInterfaceToMap;
 
+// src/jsonSchemaParser.js
+function convertJsonSchemaType(schemaProp) {
+  if (!schemaProp || typeof schemaProp !== "object") {
+    return Object;
+  }
+  const type = schemaProp.type;
+  switch (type) {
+    case "string":
+      return String;
+    case "number":
+    case "integer":
+      return Number;
+    case "boolean":
+      return Boolean;
+    case "object":
+      if (schemaProp.properties) {
+        return parseJsonSchemaToMap(schemaProp);
+      }
+      return Object;
+    case "array":
+      if (schemaProp.items) {
+        return [convertJsonSchemaType(schemaProp.items)];
+      }
+      return Array;
+    case "null":
+      return null;
+    default:
+      return Object;
+  }
+}
+function parseJsonSchemaToMap(schema) {
+  if (!schema || typeof schema !== "object") {
+    throw new Error("jsonSchemaParser: schema must be an object");
+  }
+  if (schema.$ref) {
+    throw new Error("jsonSchemaParser: $ref is not supported. Schema must be dereferenced before parsing.");
+  }
+  const map = {};
+  if (schema.type === "object" && schema.properties) {
+    for (const [key, value] of Object.entries(schema.properties)) {
+      if (value.$ref) {
+        throw new Error(`jsonSchemaParser: $ref found in property "${key}". Schema must be dereferenced before parsing.`);
+      }
+      map[key] = convertJsonSchemaType(value);
+    }
+  } else if (schema.type === "array" && schema.items) {
+    return [convertJsonSchemaType(schema.items)];
+  } else if (schema.properties) {
+    for (const [key, value] of Object.entries(schema.properties)) {
+      if (value.$ref) {
+        throw new Error(`jsonSchemaParser: $ref found in property "${key}". Schema must be dereferenced before parsing.`);
+      }
+      map[key] = convertJsonSchemaType(value);
+    }
+  } else {
+    throw new Error('jsonSchemaParser: schema must have "properties" or be an array type');
+  }
+  return map;
+}
+
 // src/reducer.js
 var savedOpts;
 var getType = (a) => {
@@ -303,12 +363,20 @@ var reduceByInterface = async (input, interfaceString, interfaceName, options) =
   const map = await interfaceParser_default(interfaceString, interfaceName);
   return reduceByMap(input, map, options);
 };
+var reduceByJsonSchema = (input, jsonSchema, options) => {
+  const map = parseJsonSchemaToMap(jsonSchema);
+  return reduceByMap(input, map, options);
+};
 reduceByMap.fromInterface = reduceByInterface;
+reduceByMap.fromJsonSchema = reduceByJsonSchema;
 reduceByMap.parseInterface = interfaceParser_default;
+reduceByMap.parseJsonSchema = parseJsonSchemaToMap;
 var reducer_default = reduceByMap;
 export {
   reducer_default as default,
   interfaceParser_default as parseInterfaceToMap,
+  parseJsonSchemaToMap,
   reduceByInterface,
+  reduceByJsonSchema,
   reduceByMap
 };

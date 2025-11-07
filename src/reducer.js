@@ -181,6 +181,7 @@ const reduceByMap = (input, map, options = {}) => {
 };
 
 import parseInterfaceToMap from './interfaceParser.js';
+import parseJsonSchemaToMap from './jsonSchemaParser.js';
 
 /**
  * Reduce an object using a TypeScript interface string as the map
@@ -201,9 +202,24 @@ const reduceByInterface = async (input, interfaceString, interfaceName, options)
   return reduceByMap(input, map, options);
 };
 
-// Attach the interface parser as a method
+/**
+ * Reduce an object using a JSON Schema object as the map
+ * Note: Schema must be dereferenced (no $ref)
+ * @param {object|array} input - The input array or object
+ * @param {object} jsonSchema - JSON Schema object (dereferenced, no $ref)
+ * @param {object} [options] - Options object for the package (same as reduceByMap)
+ * @return {*}
+ */
+const reduceByJsonSchema = (input, jsonSchema, options) => {
+  const map = parseJsonSchemaToMap(jsonSchema);
+  return reduceByMap(input, map, options);
+};
+
+// Attach the parsers as methods
 reduceByMap.fromInterface = reduceByInterface;
+reduceByMap.fromJsonSchema = reduceByJsonSchema;
 reduceByMap.parseInterface = parseInterfaceToMap;
+reduceByMap.parseJsonSchema = parseJsonSchemaToMap;
 
 export default reduceByMap;
-export { reduceByMap, reduceByInterface, parseInterfaceToMap };
+export { reduceByMap, reduceByInterface, reduceByJsonSchema, parseInterfaceToMap, parseJsonSchemaToMap };

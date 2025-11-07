@@ -14,8 +14,9 @@
   },
   "scripts": {
     "build": "tsup && npm run build:types",
-    "build:types": "cp src/reducer.d.ts dist/reducer.d.ts && cp src/interfaceParser.d.ts dist/interfaceParser.d.ts",
+    "build:types": "node scripts/copy-types.js",
     "test": "vitest run",
+    "test:browser": "vitest run --config vitest.config.browser.js",
     "prepublish": "npm run build:readme:toc && npm run build && npm run test",
     "build:readme:toc": "npx doctoc ./docs/README.md && npx doctoc ./README.md"
   },
@@ -36,6 +37,8 @@
     }
   },
   "devDependencies": {
+    "@vitest/browser": "^4.0.7",
+    "playwright": "^1.48.2",
     "tsup": "^8.5.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.7"
